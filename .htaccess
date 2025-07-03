@@ -1,0 +1,28 @@
+RewriteEngine On
+
+# Se o arquivo ou diretório não existir, redireciona para public/index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+# Bloqueia acesso direto ao config.php dentro de /public
+<Files "public/config.php">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+
+# Bloqueia acesso direto ao .htaccess dentro de /public
+<Files ".htaccess">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
